@@ -13,6 +13,7 @@ steps:
 - script: | 
     sudo apt-get update
     sudo apt-get install build-essential
+    sudo apt-get install libboost-all-dev
     git clone https://github.com/protocolbuffers/protobuf.git
     cd protobuf
     git submodule update --init --recursive
