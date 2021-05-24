@@ -7,13 +7,8 @@
 class Constants
 {
 public:
+    static const size_t MaxDatabaseSize;
     static const std::string endOfFile;
-    class DatabaseTypes 
-    {
-    public:
-        static const std::string fifo;
-        static const std::string lru;
-    };
     
 };
 

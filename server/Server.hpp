@@ -45,6 +45,7 @@ private:
                 buffer.consume(buffer.size());
                 
                 DatabaseServerApi::HandleRequest(std::move(serializedData), socket);
+                DatabaseServerApi::Update();
 
                 waitForRequest();
             }

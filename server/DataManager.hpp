@@ -154,7 +154,7 @@ public:
     {
         return values[index];
     }
-    Value at(size_t index) const
+    const Value at(size_t index) const
     { 
         return values[index]; 
     }
@@ -166,7 +166,11 @@ public:
     {
         return lookup[key];
     }
-    Key GetKey(size_t index) const 
+    size_t GetDatabseSize() const
+    {
+        return this->databaseSize;
+    }
+    const Key GetKey(size_t index) const 
     { 
         return keys[index];
     }

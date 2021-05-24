@@ -121,8 +121,6 @@ namespace DatabaseClientApi
 
 
 
-
-
     DATABASE_API_PUBLIC bool Delete(const std::string& key)
     {
         ProtobufData::Data data;
@@ -133,8 +131,6 @@ namespace DatabaseClientApi
         return true;
     }
 
-
-    
 
 
 }
