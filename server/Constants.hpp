@@ -7,6 +7,7 @@
 class Constants
 {
 public:
+    static const std::string endOfFile;
     class DatabaseTypes 
     {
     public:

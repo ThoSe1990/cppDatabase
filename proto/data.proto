@@ -14,5 +14,6 @@ message Data {
         put = 0;
         delete = 1;
         get = 2;
+        list = 3;
     }
 }

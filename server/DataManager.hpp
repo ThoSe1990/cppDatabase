@@ -18,10 +18,12 @@ private:
     std::vector<Key> keys;
     std::unordered_map<Key, size_t> lookup;
 
+    size_t databaseSize = 0;
+
     std::mutex databaseMutex;
 public:
 
-    Value Add(Key key)
+    Value Add(const Key& key)
     {
         assert(lookup.find(key) == lookup.end());
         assert(keys.size() == values.size());
@@ -34,11 +36,13 @@ public:
         values.push_back();
         keys.push_back(key);
         
-        return values.back();
-    }
+        auto addedValue = values.back();
+        this->databaseSize += addedValue.length() + key.length();
+
+        return addedValue;    }
 
     template <typename... TArgs>
-    Value Add(Key key, TArgs&&... args)
+    Value Add(const Key& key, TArgs&&... args)
     {
         assert(lookup.find(key) == lookup.end());
         assert(keys.size() == values.size());
@@ -51,14 +55,14 @@ public:
         values.push_back(std::move(std::forward<TArgs>(args)...));
         keys.push_back(key);
 
-        std::cout << values.size() << " " << key << " value " << values.back() << std::endl;
+        auto addedValue = values.back();
+        this->databaseSize += addedValue.length() + key.length();
 
-        return values.back();
+        return addedValue;
     }
 
-    void Remove(Key key)
+    void Remove(const Key& key)
     {
-        std::cout << "Deleting: " << key << std::endl;
 
         auto it = lookup.find(key);
         if (it != lookup.end())
@@ -67,6 +71,9 @@ public:
 
             const size_t index = it->second;
             const Key key = keys[index];
+
+            this->databaseSize -= key.length();
+            this->databaseSize -= values[index].length();
 
             if (index < values.size() - 1)
             {
@@ -91,8 +98,7 @@ public:
         
         std::lock_guard<std::mutex> guard(databaseMutex);
 
-
-        std::shared_ptr<Value> value = std::move(values[indexFrom]);
+        Value value = std::move(values[indexFrom]);
         Key key = keys[indexFrom];
 
         const int direction = indexFrom < indexTo ? 1 : -1;
@@ -109,27 +115,17 @@ public:
     }
 
 
-    bool Has(Key key) const
+    bool Has(const Key& key) const
     {
         return lookup.find(key) != lookup.end();
     }
 
-    Value GetValue(Key key) const
+    Value GetValue(Key key)
     {
         auto it = lookup.find(key);
         if (it != lookup.end())
-        {
-            return values[it->second];
-        }
-        return nullptr;
-    }
-
-
-    const Value GetValue(Key key)
-    {
-        auto it = lookup.find(key);
-        if (it != lookup.end())
-        {
+        {   
+            MoveItem(it->second, values.size()-1);
             return values[it->second];
         }
         return nullptr;
@@ -139,13 +135,26 @@ public:
     {
         values.clear();
         keys.clear();
+        databaseSize = 0;
     }
 
-    std::shared_ptr<Value> operator[](size_t index) const
+    void List()
+    {
+        assert(keys.size() == values.size());
+        assert(lookup.size() == values.size());
+    
+        for (int i = 0 ; i < values.size() ; i++)
+            std::cout << "keys[" << i << "]: " << keys[i] << " values[" << i << "]: " << values[i] << std::endl;
+
+        std::cout << "database size: " << this->databaseSize << std::endl; 
+    
+    }
+
+    Value operator[](size_t index) const
     {
         return values[index];
     }
-    std::shared_ptr<Value> at(size_t index) const
+    Value at(size_t index) const
     { 
         return values[index]; 
     }

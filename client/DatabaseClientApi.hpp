@@ -10,7 +10,7 @@ namespace DatabaseClientApi
     bool Put(const std::string& key, const std::string& value);
     std::string Get(const std::string& key);
     bool Delete(const std::string& key);
-
+    void List();
 }
 
 

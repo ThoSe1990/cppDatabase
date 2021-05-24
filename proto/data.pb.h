@@ -68,12 +68,13 @@ enum Data_Function : int {
   Data_Function_put = 0,
   Data_Function_delete_ = 1,
   Data_Function_get = 2,
+  Data_Function_list = 3,
   Data_Function_Data_Function_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   Data_Function_Data_Function_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool Data_Function_IsValid(int value);
 constexpr Data_Function Data_Function_Function_MIN = Data_Function_put;
-constexpr Data_Function Data_Function_Function_MAX = Data_Function_get;
+constexpr Data_Function Data_Function_Function_MAX = Data_Function_list;
 constexpr int Data_Function_Function_ARRAYSIZE = Data_Function_Function_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Data_Function_descriptor();
@@ -204,6 +205,8 @@ class Data final :
     Data_Function_delete_;
   static constexpr Function get =
     Data_Function_get;
+  static constexpr Function list =
+    Data_Function_list;
   static inline bool Function_IsValid(int value) {
     return Data_Function_IsValid(value);
   }

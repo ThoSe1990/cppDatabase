@@ -39,35 +39,37 @@ namespace DatabaseServerApi
     }
 
 
-
     void HandleRequest(const std::string&& serializedData, tcp::socket& socket)
     {
         ProtobufData::Data data;
         if (!data.ParseFromString(serializedData))
             std::cout << "error during parsing" << std::endl;
 
-
         if (data.action() == ProtobufData::Data::Function::Data_Function_put)
         {
-            DatabaseServerApi::Put(std::move(data.key()) , std::move(data.value()));
+            Put(std::move(data.key()) , std::move(data.value()));
         }
         else if (data.action() == ProtobufData::Data::Function::Data_Function_get)
         {
-            auto reply = DatabaseServerApi::GetValue(std::move(data.key()));
+            auto reply = GetValue(std::move(data.key()));
             
-            std::cout << "requested value: " << reply.value();
-
             std::string serializedData;
             if (!reply.SerializePartialToString(&serializedData))
                 std::cout << "serializing data failed " << std::endl;
 
-            serializedData.append("<EOF>");
+            serializedData.append(Constants::endOfFile);
+
             boost::asio::write(socket, boost::asio::buffer(std::move(serializedData)));
         }
         else if (data.action() == ProtobufData::Data::Function::Data_Function_delete_)
         {
-            DatabaseServerApi::Delete(std::move(data.key()));
+            Delete(std::move(data.key()));
         }
+        else if (data.action() == ProtobufData::Data::Function::Data_Function_list)
+        {
+            Database::GetInstance().StringDataManager->List();
+        }
+
     }
 }
 

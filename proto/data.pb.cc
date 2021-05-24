@@ -56,14 +56,15 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_data_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\ndata.proto\022\014ProtobufData\"y\n\004Data\022\013\n\003ke"
-  "y\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022+\n\006action\030\003 \001(\0162\033"
-  ".ProtobufData.Data.Function\"(\n\010Function\022"
-  "\007\n\003put\020\000\022\n\n\006delete\020\001\022\007\n\003get\020\002b\006proto3"
+  "\n\ndata.proto\022\014ProtobufData\"\203\001\n\004Data\022\013\n\003k"
+  "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022+\n\006action\030\003 \001(\0162"
+  "\033.ProtobufData.Data.Function\"2\n\010Function"
+  "\022\007\n\003put\020\000\022\n\n\006delete\020\001\022\007\n\003get\020\002\022\010\n\004list\020\003"
+  "b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_data_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_data_2eproto = {
-  false, false, 157, descriptor_table_protodef_data_2eproto, "data.proto", 
+  false, false, 168, descriptor_table_protodef_data_2eproto, "data.proto", 
   &descriptor_table_data_2eproto_once, nullptr, 0, 1,
   schemas, file_default_instances, TableStruct_data_2eproto::offsets,
   file_level_metadata_data_2eproto, file_level_enum_descriptors_data_2eproto, file_level_service_descriptors_data_2eproto,
@@ -84,6 +85,7 @@ bool Data_Function_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -94,6 +96,7 @@ bool Data_Function_IsValid(int value) {
 constexpr Data_Function Data::put;
 constexpr Data_Function Data::delete_;
 constexpr Data_Function Data::get;
+constexpr Data_Function Data::list;
 constexpr Data_Function Data::Function_MIN;
 constexpr Data_Function Data::Function_MAX;
 constexpr int Data::Function_ARRAYSIZE;

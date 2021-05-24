@@ -22,3 +22,4 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/server)
 add_subdirectory(${PROJECT_SOURCE_DIR}/client)    
+add_subdirectory(${PROJECT_SOURCE_DIR}/python_api)    
