@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <cassert>
 #include <algorithm>
+#include <mutex>
 
 
 
@@ -21,43 +22,49 @@ private:
     size_t databaseSize = 0;
 
     std::mutex databaseMutex;
+
 public:
 
     Value Add(const Key& key)
     {
+        std::lock_guard<std::mutex> guard(databaseMutex);
+
         assert(lookup.find(key) == lookup.end());
         assert(keys.size() == values.size());
         assert(lookup.size() == values.size());
 
 		lookup[key] = values.size();
-
-        std::lock_guard<std::mutex> guard(databaseMutex);
 
         values.push_back();
         keys.push_back(key);
         
         auto addedValue = values.back();
-        this->databaseSize += addedValue.length() + key.length();
-
-        return addedValue;    }
+        
+        this->databaseSize += addedValue.length();
+        this->databaseSize += key.length();
+        
+        return addedValue;    
+    }
 
     template <typename... TArgs>
     Value Add(const Key& key, TArgs&&... args)
     {
+        std::lock_guard<std::mutex> guard(databaseMutex);
+
         assert(lookup.find(key) == lookup.end());
         assert(keys.size() == values.size());
         assert(lookup.size() == values.size());
 
 		lookup[key] = values.size();
 
-        std::lock_guard<std::mutex> guard(databaseMutex);
-
         values.push_back(std::move(std::forward<TArgs>(args)...));
         keys.push_back(key);
 
         auto addedValue = values.back();
-        this->databaseSize += addedValue.length() + key.length();
 
+        this->databaseSize += addedValue.length();
+        this->databaseSize += key.length();
+        
         return addedValue;
     }
 
@@ -133,8 +140,10 @@ public:
 
     void Clear()
     {
+        std::lock_guard<std::mutex> guard(databaseMutex);
         values.clear();
         keys.clear();
+        lookup.clear();
         databaseSize = 0;
     }
 

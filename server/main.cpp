@@ -19,7 +19,6 @@ int main(int argc, char* argv[])
     po::options_description desc{"simple database showcase"};
     desc.add_options()
     ("help,h", "Help screen")
-    ("type,t", po::value<std::string>(), "server type: use lru or fifo")
     ("port,p", po::value<short>()->default_value(20000), "port for client / server communication")
     ;
 

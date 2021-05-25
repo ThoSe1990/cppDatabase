@@ -18,7 +18,7 @@ public:
 
     void Run()
     {
-        std::cout << "running server" << std::endl;
+        std::cout << "session created" << std::endl;
         waitForRequest();
     }
 

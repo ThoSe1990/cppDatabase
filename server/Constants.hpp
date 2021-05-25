@@ -8,6 +8,7 @@ class Constants
 {
 public:
     static const size_t MaxDatabaseSize;
+    static const std::string serializedDataLocation;
     static const std::string endOfFile;
     
 };
