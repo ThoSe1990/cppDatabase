@@ -32,7 +32,6 @@
 
 namespace DatabaseClientApi
 {
-
     using boost::asio::ip::tcp;
     boost::asio::io_context io_context;
     tcp::socket socket_(io_context);

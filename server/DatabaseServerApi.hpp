@@ -23,6 +23,7 @@ namespace DatabaseServerApi
 
     void sendData(ProtobufData::Data data, tcp::socket& socket);
 
+    void ListSerializedValues();
     void SerializeAllValues();
     void WriteDataToDisk(const std::string& key, const std::string& value);
     std::string GetValueFromDisk(const std::string& key);

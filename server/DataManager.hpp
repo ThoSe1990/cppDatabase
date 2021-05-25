@@ -135,7 +135,8 @@ public:
             MoveItem(it->second, values.size()-1);
             return values[it->second];
         }
-        return nullptr;
+        
+        return Value();
     }
 
     void Clear()

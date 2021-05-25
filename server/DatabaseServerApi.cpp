@@ -5,6 +5,7 @@
 using boost::asio::ip::tcp;
 
 #include <mutex>
+#include <filesystem>
 
 namespace DatabaseServerApi 
 {
@@ -13,6 +14,7 @@ namespace DatabaseServerApi
     void HandleRequest(const std::string&& serializedData, tcp::socket& socket)
     {
         std::lock_guard<std::mutex> guard(mutex);
+
         ProtobufData::Data data;
         if (!data.ParseFromString(serializedData))
             std::cout << "error during parsing" << std::endl;
@@ -35,6 +37,7 @@ namespace DatabaseServerApi
         else if (data.action() == ProtobufData::Data::Function::Data_Function_list)
         {
             Database::GetInstance().StringDataManager->List();
+            ListSerializedValues();
         }
 
     }
@@ -83,13 +86,16 @@ namespace DatabaseServerApi
         auto& db = Database::GetInstance();
 
         ProtobufData::Data reply;
+        
         std::string value = db.StringDataManager->GetValue(key);
         
-        if (!value.empty())
-        {
-            reply.set_value(value);
-            reply.set_key(key);
-        }
+        if (value.empty())
+            value = GetValueFromDisk(key);
+            
+
+        reply.set_value(value);
+        reply.set_key(key);
+
         return reply;
     }
 
@@ -100,7 +106,6 @@ namespace DatabaseServerApi
     }
     
     
-
 
     void sendData(ProtobufData::Data data, tcp::socket& socket)
     {
@@ -114,7 +119,6 @@ namespace DatabaseServerApi
     }
 
     
-
 
 
     void WriteDataToDisk(const std::string& key, const std::string& value)
@@ -133,11 +137,37 @@ namespace DatabaseServerApi
 
     std::string GetValueFromDisk(const std::string& key)
     {
+        for (const auto & d : std::filesystem::directory_iterator(Constants::serializedDataLocation))
+        {
+            std::filesystem::path file(d);
+            std::string filename = file.stem();
+            if (filename.compare(key) == 0)
+            {
+                std::fstream input(file, std::ios::in | std::ios::binary);
+                ProtobufData::Data data;
+                if (!data.ParseFromIstream(&input)) std::cout << "error parsing file: " << d << std::endl;
 
+                return data.value();
+            }
+        }
+        return "";
     }
 
 
+    void ListSerializedValues()
+    {
+        std::cout << std::endl << std::endl << " **** serialized keys/values ****" << std::endl;
+        for (const auto & d : std::filesystem::directory_iterator(Constants::serializedDataLocation))
+        {
+            std::filesystem::path file(d);
+            std::fstream input(file, std::ios::in | std::ios::binary);
+            ProtobufData::Data data;
+            if (!data.ParseFromIstream(&input)) std::cout << "error parsing file: " << d << std::endl;
 
+            std::cout << "key: " << data.key() << " value: " << data.value() << std::endl;
+
+        }
+    }
 
 
 }
