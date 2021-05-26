@@ -7,9 +7,9 @@ This database example runs a simple database to add and get keys and values. Key
 ![architecture](./img/architecture.png)
 
 
+## Build
 
-
-To build and run pre-install the libraries. On Linux systems run following commands:
+To build and pre-install boost and protobuf. On Linux systems run following commands:
 
 ```bash
 #boost 
@@ -25,6 +25,16 @@ git submodule update --init --recursive
  make check
  sudo make install
  sudo ldconfig # refresh shared library cache.
+ ```
+
+After installing depnendencies, create a build directory, build and install the project with cmake. By running install the python library (build for python 3.8) will be installed on your system.
+
+```bash
+mkdir build
+cd build
+cmake .. -G "Unix Makefiles"
+make
+sudo make install 
  ```
 
 
