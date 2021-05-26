@@ -13,16 +13,17 @@ steps:
 - script: | 
     sudo apt-get update
     sudo apt-get install build-essential
-    sudo apt-get install libboost-all-dev
+    sudo apt-get install libboost-all-dev    
     git clone https://github.com/protocolbuffers/protobuf.git
     cd protobuf
     git submodule update --init --recursive
+    git checkout tags/v3.17.0
     ./autogen.sh
     ./configure
     make
     make check
     sudo make install
-    sudo ldconfig
+    sudo ldconfig # refresh shared library cache.
     cd ..
     mkdir build
     cd build

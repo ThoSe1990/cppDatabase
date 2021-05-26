@@ -12,6 +12,7 @@ target_include_directories(${target} PUBLIC
     ${PROJECT_ROOT_DIR}/proto
 )
 
+
 target_link_libraries(${target} PUBLIC 
     ${Protobuf_LIBRARIES}
     Boost::program_options
