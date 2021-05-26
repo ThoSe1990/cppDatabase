@@ -1,4 +1,4 @@
-
+[![Build Status](https://dev.azure.com/thomassedlmair/cppDatabase/_apis/build/status/ThoSe1990.cppDatabase?branchName=master)](https://dev.azure.com/thomassedlmair/cppDatabase/_build/latest?definitionId=7&branchName=master)
 
 # Database Example 
 
