@@ -58,3 +58,10 @@ The client api can easily used with following functions.
 - Get(key) -> returns the value from the passed key as string
 - Delete(key) -> deletes a value/key
 - List() -> lists all keys/values on the server (std::cout)
+
+Build the project and start the server 
+```bash 
+cd build_directory
+./bin/server
+```
+Once the server is started values can be added either by the client `./bin/client` (endlessloop) or by the given python scripts in `./python_api/scripts/`. Use the list function to print serversided all values/keys
